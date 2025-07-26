@@ -109,6 +109,25 @@ def profile():
 
 # --- RCE (Remote Command Execution) ---
 @app.route('/exec', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        uname = request.form.get('username')
+        passwd = request.form.get('password')
+
+        conn = sqlite3.connect('vulnlab.db')
+        cur = conn.cursor()
+
+        # 🚨 SQL Injection vulnerability
+        sql = f"SELECT * FROM users WHERE username = '{uname}' AND password = '{passwd}'"
+        cur.execute(sql)
+        user = cur.fetchone()
+        conn.close()
+
+        if user:
+            return f"<h3>Welcome {uname}</h3>"
+        else:
+            return "Invalid credentials"
+    
 def exec_cmd():
     if request.method == 'POST':
         command = request.form.get('cmd')
@@ -137,7 +156,25 @@ def ssrf():
         return f"<pre>{resp.text}</pre>"
     except Exception as e:
         return f"<pre>Failed to fetch URL: {e}</pre>"
+def login():
+    if request.method == 'POST':
+        uname = request.form.get('username')
+        passwd = request.form.get('password')
 
+        conn = sqlite3.connect('vulnlab.db')
+        cur = conn.cursor()
+
+        # 🚨 SQL Injection vulnerability
+        sql = f"SELECT * FROM users WHERE username = '{uname}' AND password = '{passwd}'"
+        cur.execute(sql)
+        user = cur.fetchone()
+        conn.close()
+
+        if user:
+            return f"<h3>Welcome {uname}</h3>"
+        else:
+            return "Invalid credentials"
+    
 # --- Start App ---
 if __name__ == '__main__':
     init_db()
