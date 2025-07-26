@@ -21,7 +21,20 @@ def init_db():
     conn.close()
 
 # --- Home Route ---
-@app.route('/')
+
+app = Flask(__name__)
+
+# --- Initialize SQLite Database ---
+def init_db():
+    conn = sqlite3.connect('vulnlab.db')
+    cur = conn.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT,
+            password TEXT,
+            bio TEXT
+        )@app.route('/')
 def home():
     return '''
         <h1>Welcome to the Vulnerable Lab</h1>
@@ -59,7 +72,21 @@ def register():
             Username: <input name="username"><br>
             Password: <input name="password"><br>
             Bio: <textarea name="bio"></textarea><br>
-            <input type="submit" value="Register">
+
+app = Flask(__name__)
+
+# --- Initialize SQLite Database ---
+def init_db():
+    conn = sqlite3.connect('vulnlab.db')
+    cur = conn.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT,
+            password TEXT,
+            bio TEXT
+        )         
+<input type="submit" value="Register">
         </form>
     '''
 
