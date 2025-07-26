@@ -138,6 +138,17 @@ def ssrf():
     except Exception as e:
         return f"<pre>Failed to fetch URL: {e}</pre>"
 
+# --- SSRF (Server-Side Request Forgery) ---
+@app.route('/ssrf')
+def ssrf():
+    url = request.args.get('url')
+    try:
+        # 🚨 SSRF vulnerability
+        resp = requests.get(url, timeout=5)
+        return f"<pre>{resp.text}</pre>"
+    except Exception as e:
+        return f"<pre>Failed to fetch URL: {e}</pre>"
+
 # --- Start App ---
 if __name__ == '__main__':
     init_db()
